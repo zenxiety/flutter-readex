@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final mangaRandomModel = mangaRandomModelFromJson(jsonString);
-
 import 'dart:convert';
 
 MangaRandomModel mangaRandomModelFromJson(String str) =>

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_chapter_feed_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_chapter_feed_model.dart';
 import 'package:flutter_manga_app_test/providers/read_manga_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class NextButton extends StatelessWidget {
         onPressed: () {
           state.flushManga();
           state.nextChapter(
-            chapterData[++state.chapterIndex].id,
+            chapterId: chapterData[++state.chapterIndex].id,
           );
         },
         child: const Text("NEXT"),
@@ -58,7 +58,7 @@ class PrevButton extends StatelessWidget {
             : () {
                 state.flushManga();
                 state.nextChapter(
-                  chapterData[--state.chapterIndex].id,
+                  chapterId: chapterData[--state.chapterIndex].id,
                 );
               },
         child: const Text("PREV"),

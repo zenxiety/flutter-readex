@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final mangaChapterFeedModel = mangaChapterFeedModelFromJson(jsonString);
-
 import 'dart:convert';
 
 MangaChapterFeedModel mangaChapterFeedModelFromJson(String str) =>
@@ -62,7 +58,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        type: datumTypeValues.map[json["type"]] ?? DatumType.CHAPTER,
+        type: datumTypeValues.map[json["type"]] ?? DatumType.chapter,
         attributes: Attributes.fromJson(json["attributes"]),
         relationships: List<Relationship>.from(
             json["relationships"].map((x) => Relationship.fromJson(x))),
@@ -110,7 +106,7 @@ class Attributes {
         title: json["title"] ?? "",
         translatedLanguage:
             translatedLanguageValues.map[json["translatedLanguage"]] ??
-                TranslatedLanguage.EN,
+                TranslatedLanguage.en,
         externalUrl: json["externalUrl"] ?? "",
         publishAt: DateTime.parse(json["publishAt"] ?? 0),
         readableAt: DateTime.parse(json["readableAt"] ?? 0),
@@ -136,9 +132,9 @@ class Attributes {
       };
 }
 
-enum TranslatedLanguage { EN }
+enum TranslatedLanguage { en }
 
-final translatedLanguageValues = EnumValues({"en": TranslatedLanguage.EN});
+final translatedLanguageValues = EnumValues({"en": TranslatedLanguage.en});
 
 class Relationship {
   String id;
@@ -152,7 +148,7 @@ class Relationship {
   factory Relationship.fromJson(Map<String, dynamic> json) => Relationship(
         id: json["id"],
         type:
-            relationshipTypeValues.map[json["type"]] ?? RelationshipType.MANGA,
+            relationshipTypeValues.map[json["type"]] ?? RelationshipType.manga,
       );
 
   Map<String, dynamic> toJson() => {
@@ -161,17 +157,17 @@ class Relationship {
       };
 }
 
-enum RelationshipType { MANGA, SCANLATION_GROUP, USER }
+enum RelationshipType { manga, scanlationGroup, user }
 
 final relationshipTypeValues = EnumValues({
-  "manga": RelationshipType.MANGA,
-  "scanlation_group": RelationshipType.SCANLATION_GROUP,
-  "user": RelationshipType.USER
+  "manga": RelationshipType.manga,
+  "scanlation_group": RelationshipType.scanlationGroup,
+  "user": RelationshipType.user
 });
 
-enum DatumType { CHAPTER }
+enum DatumType { chapter }
 
-final datumTypeValues = EnumValues({"chapter": DatumType.CHAPTER});
+final datumTypeValues = EnumValues({"chapter": DatumType.chapter});
 
 class EnumValues<T> {
   Map<String, T> map;

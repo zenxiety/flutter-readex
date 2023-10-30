@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final mangaModel = mangaModelFromJson(jsonString);
-
 import 'dart:convert';
 
 MangaModel mangaModelFromJson(String str) =>
@@ -87,7 +83,6 @@ class DataAttributes {
   DateTime? createdAt;
   DateTime? updatedAt;
   int? version;
-  List<String>? availableTranslatedLanguages;
   String? latestUploadedChapter;
 
   DataAttributes({
@@ -109,7 +104,6 @@ class DataAttributes {
     this.createdAt,
     this.updatedAt,
     this.version,
-    this.availableTranslatedLanguages,
     this.latestUploadedChapter,
   });
 
@@ -144,11 +138,6 @@ class DataAttributes {
             ? null
             : DateTime.parse(json["updatedAt"]),
         version: json["version"],
-        availableTranslatedLanguages:
-            json["availableTranslatedLanguages"] == null
-                ? []
-                : List<String>.from(
-                    json["availableTranslatedLanguages"]!.map((x) => x)),
         latestUploadedChapter: json["latestUploadedChapter"],
       );
 
@@ -175,38 +164,103 @@ class DataAttributes {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "version": version,
-        "availableTranslatedLanguages": availableTranslatedLanguages == null
-            ? []
-            : List<dynamic>.from(availableTranslatedLanguages!.map((x) => x)),
         "latestUploadedChapter": latestUploadedChapter,
       };
 }
 
 class AltTitle {
-  String? ja;
-  String? jaRo;
-  String? zhHk;
+  String? pl;
   String? ru;
+  String? zhHk;
+  String? ja;
+  String? zh;
+  String? ko;
+  String? jaRo;
+  String? en;
+  String? vi;
+  String? esLa;
+  String? fr;
+  String? ptBr;
+  String? ar;
+  String? he;
+  String? tl;
+  String? tr;
+  String? uk;
+  String? th;
+  String? it;
+  String? ms;
+  String? zhRo;
 
   AltTitle({
-    this.ja,
-    this.jaRo,
-    this.zhHk,
+    this.pl,
     this.ru,
+    this.zhHk,
+    this.ja,
+    this.zh,
+    this.ko,
+    this.jaRo,
+    this.en,
+    this.vi,
+    this.esLa,
+    this.fr,
+    this.ptBr,
+    this.ar,
+    this.he,
+    this.tl,
+    this.tr,
+    this.uk,
+    this.th,
+    this.it,
+    this.ms,
+    this.zhRo,
   });
 
   factory AltTitle.fromJson(Map<String, dynamic> json) => AltTitle(
-        ja: json["ja"],
-        jaRo: json["ja-ro"],
-        zhHk: json["zh-hk"],
+        pl: json["pl"],
         ru: json["ru"],
+        zhHk: json["zh-hk"],
+        ja: json["ja"],
+        zh: json["zh"],
+        ko: json["ko"],
+        jaRo: json["ja-ro"],
+        en: json["en"],
+        vi: json["vi"],
+        esLa: json["es-la"],
+        fr: json["fr"],
+        ptBr: json["pt-br"],
+        ar: json["ar"],
+        he: json["he"],
+        tl: json["tl"],
+        tr: json["tr"],
+        uk: json["uk"],
+        th: json["th"],
+        it: json["it"],
+        ms: json["ms"],
+        zhRo: json["zh-ro"],
       );
 
   Map<String, dynamic> toJson() => {
-        "ja": ja,
-        "ja-ro": jaRo,
-        "zh-hk": zhHk,
+        "pl": pl,
         "ru": ru,
+        "zh-hk": zhHk,
+        "ja": ja,
+        "zh": zh,
+        "ko": ko,
+        "ja-ro": jaRo,
+        "en": en,
+        "vi": vi,
+        "es-la": esLa,
+        "fr": fr,
+        "pt-br": ptBr,
+        "ar": ar,
+        "he": he,
+        "tl": tl,
+        "tr": tr,
+        "uk": uk,
+        "th": th,
+        "it": it,
+        "ms": ms,
+        "zh-ro": zhRo,
       };
 }
 

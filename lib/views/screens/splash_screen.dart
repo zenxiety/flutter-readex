@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_manga_app_test/providers/splash_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,17 +10,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void navigateTo() async {
-    await Future.delayed(
-      const Duration(seconds: 0),
-    );
-
-    if (mounted) Navigator.pushReplacementNamed(context, "/home");
-  }
-
   @override
   void initState() {
-    navigateTo();
+    Future.delayed(const Duration(seconds: 1), () {
+      final provider = Provider.of<SplashProvider>(context, listen: false);
+      provider.isLoggedIn(context);
+    });
     super.initState();
   }
 
@@ -30,15 +27,10 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Icon(
-              Icons.menu_book_rounded,
-              size: 100,
-            ),
+            Image.asset('assets/images/logo.png'),
             Text(
-              "MANGADEX",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Colors.white,
-                  ),
+              "Readex",
+              style: Theme.of(context).textTheme.titleLarge!,
             ),
           ],
         ),

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
+
 MangaListModel mangaListModelFromJson(String str) =>
     MangaListModel.fromJson(json.decode(str));
 
@@ -57,7 +59,7 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         type:
-            relationshipTypeValues.map[json["type"]] ?? RelationshipType.ARTIST,
+            relationshipTypeValues.map[json["type"]] ?? RelationshipType.artist,
         attributes: DatumAttributes.fromJson(json["attributes"]),
         relationships: List<Relationship>.from(
             json["relationships"].map((x) => Relationship.fromJson(x))),
@@ -74,7 +76,7 @@ class Datum {
 
 class DatumAttributes {
   Title title;
-  List<ListAltTitle> altTitles;
+  List<AltTitle> altTitles;
   PurpleDescription description;
   bool isLocked;
   Links? links;
@@ -120,23 +122,23 @@ class DatumAttributes {
   factory DatumAttributes.fromJson(Map<String, dynamic> json) =>
       DatumAttributes(
         title: Title.fromJson(json["title"]),
-        altTitles: List<ListAltTitle>.from(
-            json["altTitles"].map((x) => ListAltTitle.fromJson(x))),
+        altTitles: List<AltTitle>.from(
+            json["altTitles"].map((x) => AltTitle.fromJson(x))),
         description: PurpleDescription.fromJson(json["description"]),
         isLocked: json["isLocked"],
         links: Links.fromJson(json["links"]),
         originalLanguage:
             originalLanguageValues.map[json["originalLanguage"]] ??
-                OriginalLanguage.JA,
+                OriginalLanguage.ja,
         lastVolume: json["lastVolume"] ?? "",
         lastChapter: json["lastChapter"] ?? "",
         publicationDemographic: json["publicationDemographic"] ?? "",
-        status: statusValues.map[json["status"]] ?? Status.COMPLETED,
+        status: statusValues.map[json["status"]] ?? Status.completed,
         year: json["year"] ?? 0,
         contentRating: contentRatingValues.map[json["contentRating"]] ??
-            ContentRating.SAFE,
+            ContentRating.safe,
         tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
-        state: stateValues.map[json["state"]] ?? MangaState.PUBLISHED,
+        state: stateValues.map[json["state"]] ?? MangaState.published,
         chapterNumbersResetOnNewVolume: json["chapterNumbersResetOnNewVolume"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
@@ -171,108 +173,12 @@ class DatumAttributes {
       };
 }
 
-class ListAltTitle {
-  String? pl;
-  String? ru;
-  String? zhHk;
-  String? ja;
-  String? zh;
-  String? ko;
-  String? jaRo;
-  String? en;
-  String? vi;
-  String? esLa;
-  String? fr;
-  String? ptBr;
-  String? ar;
-  String? he;
-  String? tl;
-  String? tr;
-  String? uk;
-  String? th;
-  String? it;
-  String? ms;
-  String? zhRo;
-
-  ListAltTitle({
-    this.pl,
-    this.ru,
-    this.zhHk,
-    this.ja,
-    this.zh,
-    this.ko,
-    this.jaRo,
-    this.en,
-    this.vi,
-    this.esLa,
-    this.fr,
-    this.ptBr,
-    this.ar,
-    this.he,
-    this.tl,
-    this.tr,
-    this.uk,
-    this.th,
-    this.it,
-    this.ms,
-    this.zhRo,
-  });
-
-  factory ListAltTitle.fromJson(Map<String, dynamic> json) => ListAltTitle(
-        pl: json["pl"],
-        ru: json["ru"],
-        zhHk: json["zh-hk"],
-        ja: json["ja"],
-        zh: json["zh"],
-        ko: json["ko"],
-        jaRo: json["ja-ro"],
-        en: json["en"],
-        vi: json["vi"],
-        esLa: json["es-la"],
-        fr: json["fr"],
-        ptBr: json["pt-br"],
-        ar: json["ar"],
-        he: json["he"],
-        tl: json["tl"],
-        tr: json["tr"],
-        uk: json["uk"],
-        th: json["th"],
-        it: json["it"],
-        ms: json["ms"],
-        zhRo: json["zh-ro"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "pl": pl,
-        "ru": ru,
-        "zh-hk": zhHk,
-        "ja": ja,
-        "zh": zh,
-        "ko": ko,
-        "ja-ro": jaRo,
-        "en": en,
-        "vi": vi,
-        "es-la": esLa,
-        "fr": fr,
-        "pt-br": ptBr,
-        "ar": ar,
-        "he": he,
-        "tl": tl,
-        "tr": tr,
-        "uk": uk,
-        "th": th,
-        "it": it,
-        "ms": ms,
-        "zh-ro": zhRo,
-      };
-}
-
-enum ContentRating { EROTICA, SAFE, SUGGESTIVE }
+enum ContentRating { erotica, safe, suggestive }
 
 final contentRatingValues = EnumValues({
-  "erotica": ContentRating.EROTICA,
-  "safe": ContentRating.SAFE,
-  "suggestive": ContentRating.SUGGESTIVE
+  "erotica": ContentRating.erotica,
+  "safe": ContentRating.safe,
+  "suggestive": ContentRating.suggestive
 });
 
 class PurpleDescription {
@@ -404,93 +310,19 @@ class Links {
       };
 }
 
-enum OriginalLanguage { JA, ZH }
+enum OriginalLanguage { ja, zh }
 
 final originalLanguageValues =
-    EnumValues({"ja": OriginalLanguage.JA, "zh": OriginalLanguage.ZH});
+    EnumValues({"ja": OriginalLanguage.ja, "zh": OriginalLanguage.zh});
 
-enum MangaState { PUBLISHED }
+enum MangaState { published }
 
-final stateValues = EnumValues({"published": MangaState.PUBLISHED});
+final stateValues = EnumValues({"published": MangaState.published});
 
-enum Status { COMPLETED, ONGOING }
+enum Status { completed, ongoing }
 
 final statusValues =
-    EnumValues({"completed": Status.COMPLETED, "ongoing": Status.ONGOING});
-
-class Tag {
-  String id;
-  TagType type;
-  TagAttributes attributes;
-  List<dynamic> relationships;
-
-  Tag({
-    required this.id,
-    required this.type,
-    required this.attributes,
-    required this.relationships,
-  });
-
-  factory Tag.fromJson(Map<String, dynamic> json) => Tag(
-        id: json["id"],
-        type: tagTypeValues.map[json["type"]] ?? TagType.TAG,
-        attributes: TagAttributes.fromJson(json["attributes"]),
-        relationships: List<dynamic>.from(json["relationships"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "type": tagTypeValues.reverse[type],
-        "attributes": attributes.toJson(),
-        "relationships": List<dynamic>.from(relationships.map((x) => x)),
-      };
-}
-
-class TagAttributes {
-  Title name;
-  FluffyDescription description;
-  Group group;
-  int version;
-
-  TagAttributes({
-    required this.name,
-    required this.description,
-    required this.group,
-    required this.version,
-  });
-
-  factory TagAttributes.fromJson(Map<String, dynamic> json) => TagAttributes(
-        name: Title.fromJson(json["name"]),
-        description: FluffyDescription.fromJson(json["description"]),
-        group: groupValues.map[json["group"]] ?? Group.CONTENT,
-        version: json["version"] ?? 0,
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name.toJson(),
-        "description": description.toJson(),
-        "group": groupValues.reverse[group],
-        "version": version,
-      };
-}
-
-class FluffyDescription {
-  FluffyDescription();
-
-  factory FluffyDescription.fromJson(Map<String, dynamic> json) =>
-      FluffyDescription();
-
-  Map<String, dynamic> toJson() => {};
-}
-
-enum Group { CONTENT, FORMAT, GENRE, THEME }
-
-final groupValues = EnumValues({
-  "content": Group.CONTENT,
-  "format": Group.FORMAT,
-  "genre": Group.GENRE,
-  "theme": Group.THEME
-});
+    EnumValues({"completed": Status.completed, "ongoing": Status.ongoing});
 
 class Title {
   String en;
@@ -508,43 +340,14 @@ class Title {
       };
 }
 
-enum TagType { TAG }
-
-final tagTypeValues = EnumValues({"tag": TagType.TAG});
-
-class Relationship {
-  String id;
-  RelationshipType type;
-  String? related;
-
-  Relationship({
-    required this.id,
-    required this.type,
-    this.related,
-  });
-
-  factory Relationship.fromJson(Map<String, dynamic> json) => Relationship(
-        id: json["id"],
-        type:
-            relationshipTypeValues.map[json["type"]] ?? RelationshipType.ARTIST,
-        related: json["related"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "type": relationshipTypeValues.reverse[type],
-        "related": related,
-      };
-}
-
-enum RelationshipType { ARTIST, AUTHOR, COVER_ART, CREATOR, MANGA }
+enum RelationshipType { artist, author, coverArt, creator, manga }
 
 final relationshipTypeValues = EnumValues({
-  "artist": RelationshipType.ARTIST,
-  "author": RelationshipType.AUTHOR,
-  "cover_art": RelationshipType.COVER_ART,
-  "creator": RelationshipType.CREATOR,
-  "manga": RelationshipType.MANGA
+  "artist": RelationshipType.artist,
+  "author": RelationshipType.author,
+  "cover_art": RelationshipType.coverArt,
+  "creator": RelationshipType.creator,
+  "manga": RelationshipType.manga
 });
 
 class EnumValues<T> {
