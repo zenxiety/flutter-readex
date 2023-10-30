@@ -81,10 +81,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Center(
                 child: Container(
                   width: MediaQuery.of(context).size.width * 3 / 4,
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height / 2,
-                    maxHeight: MediaQuery.of(context).size.height * 2 / 3,
-                  ),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Theme.of(context)
@@ -104,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               .titleLarge!
                               .copyWith(fontSize: 48),
                         ),
-                        Text("Start your adventure!",
+                        Text("Start Your Adventure!",
                             style: Theme.of(context).textTheme.bodySmall),
                         Consumer<SignUpProvider>(
                           builder: (context, state, _) {

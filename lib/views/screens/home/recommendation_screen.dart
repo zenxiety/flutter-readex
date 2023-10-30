@@ -240,7 +240,10 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
                               childAspectRatio: 9 / 16,
                             ),
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 10,
+                            itemCount: state.mangaSearchFetchState ==
+                                    FetchState.success
+                                ? state.mangaSearchList.length
+                                : 10,
                             itemBuilder: (context, index) {
                               Map<String, dynamic> mangaDetails = {
                                 "mangaDetail": null,
@@ -255,7 +258,7 @@ class _RecommendationScreenState extends State<RecommendationScreen> {
                                 mangaDetails["mangaDetail"] = state
                                     .mangaSearchList[index]
                                     .mangaSearchModel!
-                                    .data![0];
+                                    .data![index];
                                 mangaDetails["mangaCoverUrl"] =
                                     state.generateCover(
                                   mangaId: state

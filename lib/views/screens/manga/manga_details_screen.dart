@@ -152,6 +152,7 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                           ),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             IconButton(
                               onPressed: () {
