@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_chapter_feed_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_chapter_feed_model.dart';
 import 'package:flutter_manga_app_test/providers/read_manga_provider.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:flutter_manga_app_test/views/widgets/read_manga_screen/read_manga_nav_buttons_widgets.dart';
@@ -22,7 +22,8 @@ class _ReadMangaScreenState extends State<ReadMangaScreen> {
       listen: false,
     );
     provider.scrollController = ScrollController();
-    provider.getMangaPages(widget.chapterData![provider.chapterIndex].id);
+    provider.getMangaPages(
+        chapterId: widget.chapterData![provider.chapterIndex].id);
     super.initState();
   }
 
@@ -40,19 +41,7 @@ class _ReadMangaScreenState extends State<ReadMangaScreen> {
           controller: Provider.of<ReadMangaProvider>(context, listen: false)
               .scrollController,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    Provider.of<ReadMangaProvider>(context, listen: false)
-                        .closeReadPage();
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.arrow_back_rounded),
-                  iconSize: 20,
-                ),
-              ],
-            ),
+            const SizedBox(height: 40),
             Consumer<ReadMangaProvider>(builder: (context, state, _) {
               final String chapterNo =
                   widget.chapterData?[state.chapterIndex].attributes.chapter ??
@@ -65,12 +54,16 @@ class _ReadMangaScreenState extends State<ReadMangaScreen> {
               );
             }),
             Consumer<ReadMangaProvider>(builder: (context, state, _) {
+              final String chapterNo =
+                  widget.chapterData?[state.chapterIndex].attributes.chapter ??
+                      '';
+
               final String chapterTitle =
                   widget.chapterData?[state.chapterIndex].attributes.title ??
-                      "";
+                      '';
 
               return Text(
-                chapterTitle,
+                chapterTitle != "" ? chapterTitle : "Chapter $chapterNo",
                 style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               );
@@ -114,13 +107,6 @@ class _ReadMangaScreenState extends State<ReadMangaScreen> {
 
                         return Image.network(
                           imageUrl,
-                          frameBuilder:
-                              (context, child, frame, wasSynchronouslyLoaded) {
-                            if (wasSynchronouslyLoaded) return child;
-                            return const SizedBox(
-                              height: 400,
-                            );
-                          },
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
                             return const Padding(
@@ -150,6 +136,7 @@ class _ReadMangaScreenState extends State<ReadMangaScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 60),
           ],
         ),
       ),

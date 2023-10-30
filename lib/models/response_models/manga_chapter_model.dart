@@ -62,11 +62,8 @@ class Data {
 }
 
 class Attributes {
-  // dynamic volume;
   String? chapter;
-  // dynamic title;
   String translatedLanguage;
-  // dynamic externalUrl;
   DateTime publishAt;
   DateTime readableAt;
   DateTime createdAt;
@@ -75,11 +72,8 @@ class Attributes {
   int version;
 
   Attributes({
-    // required this.volume,
     required this.chapter,
-    // required this.title,
     required this.translatedLanguage,
-    // required this.externalUrl,
     required this.publishAt,
     required this.readableAt,
     required this.createdAt,
@@ -89,11 +83,8 @@ class Attributes {
   });
 
   factory Attributes.fromJson(Map<String, dynamic> json) => Attributes(
-        // volume: json["volume"] ?? "",
         chapter: json["chapter"] ?? "",
-        // title: json["title"] ?? "",
         translatedLanguage: json["translatedLanguage"],
-        // externalUrl: json["externalUrl"] ?? "",
         publishAt: DateTime.parse(json["publishAt"]),
         readableAt: DateTime.parse(json["readableAt"]),
         createdAt: DateTime.parse(json["createdAt"]),
@@ -103,11 +94,8 @@ class Attributes {
       );
 
   Map<String, dynamic> toJson() => {
-        // "volume": volume ?? "",
         "chapter": chapter ?? "",
-        // "title": title ?? "",
         "translatedLanguage": translatedLanguage,
-        // "externalUrl": externalUrl ?? "",
         "publishAt": publishAt.toIso8601String(),
         "readableAt": readableAt.toIso8601String(),
         "createdAt": createdAt.toIso8601String(),

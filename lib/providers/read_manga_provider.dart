@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_pages_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_pages_model.dart';
 import 'package:flutter_manga_app_test/services/mangadex_services.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 
@@ -10,30 +10,30 @@ class ReadMangaProvider with ChangeNotifier {
 
   ScrollController? scrollController;
 
-  void getMangaPages(String chapterId) async {
+  void getMangaPages({required String chapterId}) async {
     mangaPagesModel = null;
 
     try {
       fetchState = FetchState.loading;
 
-      final result = await MangaDexServices.getMangaPages(chapterId);
+      final result = await MangaDexServices.getMangaPages(chapterId: chapterId);
 
       mangaPagesModel = result;
 
       fetchState = FetchState.success;
       notifyListeners();
-    } catch (e) {
-      throw Exception(e);
+    } catch (_) {
+      rethrow;
     }
   }
 
-  void prevChapter(String chapterId) {
-    getMangaPages(chapterId);
+  void prevChapter({required String chapterId}) {
+    getMangaPages(chapterId: chapterId);
     notifyListeners();
   }
 
-  void nextChapter(String chapterId) {
-    getMangaPages(chapterId);
+  void nextChapter({required String chapterId}) {
+    getMangaPages(chapterId: chapterId);
     notifyListeners();
   }
 

@@ -1,37 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_manga_app_test/providers/home_provider.dart';
+import 'package:flutter_manga_app_test/providers/recommendation_provider.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
-import 'package:flutter_manga_app_test/views/screens/manga_details_screen.dart';
+import 'package:flutter_manga_app_test/utils/constants/home_card_category.dart';
+import 'package:flutter_manga_app_test/views/screens/manga/manga_details_screen.dart';
 import 'package:provider/provider.dart';
 
 class MangaCard extends StatelessWidget {
   final Map<String, dynamic> mangaDetails;
-  final bool isList;
+  final CardCategory category;
 
   const MangaCard(
-      {super.key, required this.mangaDetails, required this.isList});
+      {super.key, required this.mangaDetails, required this.category});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(builder: (context, state, _) {
+    return Consumer2<HomeProvider, RecommendationProvider>(
+        builder: (context, state1, state2, _) {
       return InkWell(
-        onTap: () {
-          state.mangalistFetchState == FetchState.success
-              ? Navigator.push(
+        onTap: (category == CardCategory.latest &&
+                    state1.mangalistFetchState != FetchState.success) ||
+                (category == CardCategory.random &&
+                    state1.mangaRandomFetchState != FetchState.success) ||
+                (category == CardCategory.recommendation &&
+                    state2.mangaRecommendationFetchState !=
+                        FetchState.success) ||
+                (category == CardCategory.search &&
+                    state2.mangaSearchFetchState != FetchState.success)
+            ? null
+            : () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MangaDetailsScreen(
                       mangaDetails: mangaDetails,
                     ),
                   ),
-                )
-              : null;
-        },
+                );
+              },
         child: Card(
           clipBehavior: Clip.hardEdge,
           color: Colors.grey.shade800,
-          child: (isList && state.mangalistFetchState == FetchState.success) ||
-                  (!isList && state.mangaRandomFetchState == FetchState.success)
+          child: (category == CardCategory.latest &&
+                      state1.mangalistFetchState == FetchState.success) ||
+                  (category == CardCategory.random &&
+                      state1.mangaRandomFetchState == FetchState.success) ||
+                  (category == CardCategory.recommendation &&
+                      state2.mangaRecommendationFetchState ==
+                          FetchState.success) ||
+                  (category == CardCategory.search &&
+                      state2.mangaSearchFetchState == FetchState.success)
               ? Column(
                   children: <Widget>[
                     Expanded(
@@ -109,12 +127,15 @@ class MangaCard extends StatelessWidget {
                     ),
                   ],
                 )
-              : state.mangalistFetchState == FetchState.loading ||
-                      state.mangaRandomFetchState == FetchState.loading
+              : state1.mangalistFetchState == FetchState.loading ||
+                      state1.mangaRandomFetchState == FetchState.loading ||
+                      state2.mangaRecommendationFetchState ==
+                          FetchState.loading ||
+                      state2.mangaSearchFetchState == FetchState.loading
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : const Text("Error"),
+                  : const Text("Error fetching manga information"),
         ),
       );
     });

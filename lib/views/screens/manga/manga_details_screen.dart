@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_list_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
 import 'package:flutter_manga_app_test/providers/manga_details_provider.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
-import 'package:flutter_manga_app_test/views/screens/read_manga_screen.dart';
+import 'package:flutter_manga_app_test/views/screens/manga/read_manga_screen.dart';
 import 'package:provider/provider.dart';
 
 class MangaDetailsScreen extends StatefulWidget {
@@ -29,15 +29,21 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
   void initState() {
     final provider = Provider.of<MangaDetailsProvider>(context, listen: false);
 
-    provider.getMangaAuthor(widget.mangaDetails?["mangaAuthorId"]);
-    provider.getMangaChapterFeed(widget.mangaDetails?["mangaDetail"].id);
+    provider.getMangaAuthor(authorId: widget.mangaDetails?["mangaAuthorId"]);
+    provider.getMangaChapterFeed(
+        mangaId: widget.mangaDetails?["mangaDetail"].id);
+    provider.favCheck(
+      mangaId: widget.mangaDetails?["mangaDetail"].id,
+      mangaTitle: widget.mangaDetails?["mangaDetail"].attributes.title.en,
+    );
 
-    tags = widget.mangaDetails?["mangaDetail"].attributes.tags ?? [];
+    tags = widget.mangaDetails?["mangaDetail"].attributes?.tags ?? [];
     for (Tag tag in tags!) {
-      if (tag.attributes.group == Group.THEME) hasTheme = true;
-      if (tag.attributes.group == Group.GENRE) hasGenre = true;
-      if (tag.attributes.group == Group.FORMAT) hasFormat = true;
+      if (tag.attributes!.group!.toLowerCase() == "theme") hasTheme = true;
+      if (tag.attributes!.group!.toLowerCase() == "genre") hasGenre = true;
+      if (tag.attributes!.group!.toLowerCase() == "format") hasFormat = true;
     }
+
     demographic =
         widget.mangaDetails?["mangaDetail"].attributes.publicationDemographic;
 
@@ -56,10 +62,16 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
           SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 2 / 3,
-            child: Image.network(
-              widget.mangaDetails!["mangaCoverUrl"],
-              fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(.15),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+              child: Image.network(
+                widget.mangaDetails!["mangaCoverUrl"],
+                fit: BoxFit.cover,
+                opacity: const AlwaysStoppedAnimation(.15),
+              ),
             ),
           ),
           ListView(
@@ -80,50 +92,51 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                   Flexible(
                     flex: 1,
                     child: Consumer<MangaDetailsProvider>(
-                        builder: (context, state, _) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            widget.mangaDetails?["mangaDetail"].attributes.title
-                                    .en ??
-                                "",
-                            style: Theme.of(context).textTheme.titleLarge,
-                            maxLines: 7,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            state.fetchState == FetchState.loading
-                                ? "Loading author..."
-                                : state.mangaAuthorModel?.data.attributes
-                                        .name ??
-                                    "",
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: <Widget>[
-                              const Icon(
-                                Icons.star,
-                                size: 16,
-                                color: Colors.amber,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                widget.mangaDetails!['mangaStatsId'].rating
-                                            .average ==
-                                        10
-                                    ? "10"
-                                    : widget.mangaDetails!['mangaStatsId']
-                                        .rating.average
-                                        .toString()
-                                        .substring(0, 3),
-                              ),
-                            ],
-                          )
-                        ],
-                      );
-                    }),
+                      builder: (context, state, _) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              widget.mangaDetails?["mangaDetail"].attributes
+                                      .title.en ??
+                                  "",
+                              style: Theme.of(context).textTheme.titleLarge,
+                              maxLines: 7,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              state.fetchState == FetchState.loading
+                                  ? "Loading author..."
+                                  : state.mangaAuthorModel?.data.attributes
+                                          .name ??
+                                      "",
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: <Widget>[
+                                const Icon(
+                                  Icons.star,
+                                  size: 16,
+                                  color: Colors.amber,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  widget.mangaDetails!['mangaStatsId'].rating
+                                              .average ==
+                                          10
+                                      ? "10"
+                                      : widget.mangaDetails!['mangaStatsId']
+                                          .rating.average
+                                          .toString()
+                                          .substring(0, 3),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
@@ -141,10 +154,21 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                         Row(
                           children: <Widget>[
                             IconButton(
-                              onPressed: Provider.of<MangaDetailsProvider>(
-                                context,
-                                listen: false,
-                              ).toggleFavourite,
+                              onPressed: () {
+                                Provider.of<MangaDetailsProvider>(
+                                  context,
+                                  listen: false,
+                                ).toggleFavourite(
+                                  context,
+                                  mangaId:
+                                      widget.mangaDetails!["mangaDetail"].id,
+                                  mangaTitle: widget
+                                      .mangaDetails!["mangaDetail"]
+                                      .attributes
+                                      .title
+                                      .en,
+                                );
+                              },
                               icon: Consumer<MangaDetailsProvider>(
                                   builder: (context, state, _) {
                                 return Icon(
@@ -214,19 +238,11 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height / 3,
-                    //   child: Scrollbar(
-                    //     child: SingleChildScrollView(
-                    // child:
                     Text(
                       widget.mangaDetails?["mangaDetail"].attributes.description
                               .en ??
                           "No Description",
                     ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -243,12 +259,12 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     for (Tag tag in tags!)
-                      if (tag.attributes.group == Group.THEME)
+                      if (tag.attributes!.group!.toLowerCase() == "theme")
                         Card(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 8),
-                            child: Text(tag.attributes.name.en),
+                            child: Text(tag.attributes!.name!.en ?? ""),
                           ),
                         ),
                   ],
@@ -267,12 +283,12 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     for (Tag tag in tags!)
-                      if (tag.attributes.group == Group.GENRE)
+                      if (tag.attributes!.group!.toLowerCase() == "genre")
                         Card(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 8),
-                            child: Text(tag.attributes.name.en),
+                            child: Text(tag.attributes!.name!.en ?? ""),
                           ),
                         ),
                   ],
@@ -291,12 +307,12 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     for (Tag tag in tags!)
-                      if (tag.attributes.group == Group.FORMAT)
+                      if (tag.attributes!.group!.toLowerCase() == "format")
                         Card(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 8),
-                            child: Text(tag.attributes.name.en),
+                            child: Text(tag.attributes!.name!.en ?? ""),
                           ),
                         ),
                   ],
@@ -306,10 +322,12 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "ALT TITLES",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  altTitleList!.isEmpty
+                      ? const SizedBox()
+                      : Text(
+                          "ALT TITLES",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
                   for (String title in altTitleList!) Text(title),
                 ],
               ),
@@ -322,7 +340,7 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                           "DEMOGRAPHIC",
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        Text(demographic?.toUpperCase() ?? ""),
+                        Text(demographic?.toUpperCase() ?? "-"),
                       ],
                     )
                   : const SizedBox(),
@@ -338,8 +356,9 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                     widget.mangaDetails?["mangaDetail"].attributes.contentRating
                             .toString()
                             .split(".")
-                            .last ??
-                        "",
+                            .last
+                            .toUpperCase() ??
+                        "-",
                   ),
                 ],
               ),
@@ -362,19 +381,20 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                             );
                           },
                     child: chapters.isEmpty
-                        ? const SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text(
-                            "Read First Chapter",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
+                        ? const Text("No chapter available")
+                        : state.chapterFetchState == FetchState.loading
+                            ? const SizedBox(
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                state.mangaChapterFeedModel?.data.length == 1
+                                    ? "Read Chapter"
+                                    : "Read First Chapter",
+                              ),
                   );
                 },
               ),
@@ -384,51 +404,54 @@ class _MangaDetailsScreenState extends State<MangaDetailsScreen> {
                   final totalChapters =
                       state.mangaChapterFeedModel?.data.length ?? 0;
 
-                  return Container(
-                    constraints: BoxConstraints(
-                      maxHeight: totalChapters == 0
-                          ? 0
-                          : MediaQuery.of(context).size.height / 2,
-                    ),
-                    child: ListView(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      children: <Widget>[
-                        for (int data = 0; data < totalChapters; data++)
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    chapters[data]
-                                        .attributes
-                                        .chapter
-                                        .toString(),
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Flexible(
-                                    child: Text(
-                                      chapters[data].attributes.title != ""
-                                          ? chapters[data].attributes.title
-                                          : chapters[data]
+                  return totalChapters == 1
+                      ? const SizedBox()
+                      : Container(
+                          constraints: BoxConstraints(
+                            maxHeight: totalChapters == 0
+                                ? 0
+                                : MediaQuery.of(context).size.height / 2,
+                          ),
+                          child: ListView(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            children: <Widget>[
+                              for (int data = 0; data < totalChapters; data++)
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 12),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          chapters[data]
                                               .attributes
                                               .chapter
                                               .toString(),
-                                      overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall,
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Flexible(
+                                          child: Text(
+                                            chapters[data].attributes.title !=
+                                                    ""
+                                                ? chapters[data]
+                                                    .attributes
+                                                    .title
+                                                : "Chapter ${chapters[data].attributes.chapter.toString()}",
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
-                  );
+                        );
                 },
               )
             ],

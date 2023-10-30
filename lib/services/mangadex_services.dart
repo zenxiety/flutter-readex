@@ -1,24 +1,29 @@
-import 'package:flutter_manga_app_test/models/responses/manga_author_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_chapter_feed_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_pages_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_chapter_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_cover_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_list_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_random_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_search_model.dart';
-import 'package:flutter_manga_app_test/models/responses/manga_stats_model.dart';
+import 'package:flutter_manga_app_test/constants/urls.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_author_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_chapter_feed_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_pages_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_chapter_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_cover_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_list_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_random_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_search_model.dart';
+import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
 import 'package:http/http.dart' as http;
 
 class MangaDexServices {
-  static Future<MangaListModel> getMangaList(int page, int mangaPerPage) async {
+  static Future<MangaListModel> getMangaList({
+    required int page,
+    required int mangaPerPage,
+  }) async {
+    final Urls urls = Urls();
     MangaListModel? mangaListModel;
 
     try {
       final int mangaOffset = mangaPerPage * page;
 
       final url = Uri.parse(
-        "https://api.mangadex.org/manga?limit=$mangaPerPage&offset=$mangaOffset",
+        "${urls.mangaDexBaseUrl}manga?limit=$mangaPerPage&offset=$mangaOffset&contentRating[]=safe",
       );
 
       final headers = {
@@ -30,19 +35,20 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaListModel = mangaListModelFromJson(response.body);
       }
-    } catch (e) {
-      throw Exception("$e");
+    } catch (_) {
+      rethrow;
     }
 
     return mangaListModel!;
   }
 
   static Future<MangaRandomModel> getRandomManga() async {
+    final Urls urls = Urls();
     MangaRandomModel? mangaRandomModel;
 
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/manga/random",
+        "${urls.mangaDexBaseUrl}manga/random?contentRating[]=safe",
       );
 
       final headers = {
@@ -54,18 +60,20 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaRandomModel = mangaRandomModelFromJson(response.body);
       }
-    } catch (e) {
-      throw Exception("$e");
+    } catch (_) {
+      rethrow;
     }
 
     return mangaRandomModel!;
   }
 
-  static Future<MangaModel> getMangaDetails(String id) async {
+  static Future<MangaModel> getMangaDetails({required String mangaId}) async {
+    final Urls urls = Urls();
     MangaModel? mangaModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/manga/$id?includes[]=author&includes[]=artist&includes[]=cover_art",
+        "${urls.mangaDexBaseUrl}manga/$mangaId?includes[]=author&includes[]=artist&includes[]=cover_art",
       );
 
       final headers = {
@@ -77,18 +85,22 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaModel = mangaModelFromJson(response.body);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaModel!;
   }
 
-  static Future<MangaCoverModel> getMangaCoverModel(String id) async {
+  static Future<MangaCoverModel> getMangaCover({
+    required String coverId,
+  }) async {
+    final Urls urls = Urls();
     MangaCoverModel? mangaCoverModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/cover/$id",
+        "${urls.mangaDexBaseUrl}cover/$coverId",
       );
 
       final headers = {
@@ -100,18 +112,22 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaCoverModel = mangaCoverModelFromJson(response.body);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaCoverModel!;
   }
 
-  static Future<MangaChapterModel> getMangaChapter(String id) async {
+  static Future<MangaChapterModel> getMangaChapter({
+    required String chapterId,
+  }) async {
+    final Urls urls = Urls();
     MangaChapterModel? mangaChapterModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/chapter/$id",
+        "${urls.mangaDexBaseUrl}chapter/$chapterId",
       );
 
       final headers = {
@@ -123,18 +139,22 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaChapterModel = mangaChapterModelFromJson(response.body);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaChapterModel!;
   }
 
-  static Future<MangaStatsModel> getMangaStats(String id) async {
+  static Future<MangaStatsModel> getMangaStats({
+    required String mangaId,
+  }) async {
+    final Urls urls = Urls();
     MangaStatsModel? mangaStatsModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/statistics/manga/$id",
+        "${urls.mangaDexBaseUrl}statistics/manga/$mangaId",
       );
 
       final headers = {
@@ -144,20 +164,24 @@ class MangaDexServices {
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        mangaStatsModel = mangaStatsModelFromJson(response.body, id);
+        mangaStatsModel = mangaStatsModelFromJson(response.body, mangaId);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaStatsModel!;
   }
 
-  static Future<MangaPagesModel> getMangaPages(String chapterId) async {
+  static Future<MangaPagesModel> getMangaPages({
+    required String chapterId,
+  }) async {
+    final Urls urls = Urls();
     MangaPagesModel? mangaChapterImagesModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/at-home/server/$chapterId",
+        "${urls.mangaDexBaseUrl}at-home/server/$chapterId",
       );
 
       final headers = {
@@ -170,18 +194,22 @@ class MangaDexServices {
         mangaChapterImagesModel =
             mangaChapterImagesModelFromJson(response.body);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaChapterImagesModel!;
   }
 
-  static Future<MangaAuthorModel> getMangaAuthor(String authorId) async {
+  static Future<MangaAuthorModel> getMangaAuthor({
+    required String authorId,
+  }) async {
+    final Urls urls = Urls();
     MangaAuthorModel? mangaAuthorModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/author/$authorId",
+        "${urls.mangaDexBaseUrl}author/$authorId",
       );
 
       final headers = {
@@ -193,20 +221,22 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaAuthorModel = mangaAuthorModelFromJson(response.body);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaAuthorModel!;
   }
 
-  static Future<MangaChapterFeedModel> getMangaChapterFeed(
-    String mangaId,
-  ) async {
+  static Future<MangaChapterFeedModel> getMangaChapterFeed({
+    required String mangaId,
+  }) async {
+    final Urls urls = Urls();
     MangaChapterFeedModel? mangaChapterFeedModel;
+
     try {
       final url = Uri.parse(
-        "https://api.mangadex.org/manga/$mangaId/feed?translatedLanguage%5B%5D=en&order%5Bchapter%5D=asc&includes%5B%5D=manga",
+        "${urls.mangaDexBaseUrl}manga/$mangaId/feed?translatedLanguage%5B%5D=en&order%5Bchapter%5D=asc&includes%5B%5D=manga",
       );
 
       final headers = {
@@ -218,36 +248,37 @@ class MangaDexServices {
       if (response.statusCode == 200) {
         mangaChapterFeedModel = mangaChapterFeedModelFromJson(response.body);
       }
-    } catch (e) {
+    } catch (_) {
       rethrow;
     }
 
     return mangaChapterFeedModel!;
   }
 
-  // static Future<MangaSearchModel> searchManga(
-  //   String mangaTitle,
-  // ) async {
-  //   MangaSearchModel? mangaSearchModel;
+  static Future<MangaSearchModel> searchManga({
+    required String mangaTitle,
+  }) async {
+    final Urls urls = Urls();
+    MangaSearchModel? mangaSearchModel;
 
-  //   try {
-  //     final url = Uri.parse(
-  //       "https://api.mangadex.org/manga?title=mangaTitle",
-  //     );
+    try {
+      final url = Uri.parse(
+        "${urls.mangaDexBaseUrl}manga?title=$mangaTitle&order%5Byear%5D=desc&contentRating[]=safe",
+      );
 
-  //     final headers = {
-  //       "Content-Type": "application/json",
-  //     };
+      final headers = {
+        "Content-Type": "application/json",
+      };
 
-  //     final response = await http.get(url, headers: headers);
+      final response = await http.get(url, headers: headers);
 
-  //     if (response.statusCode == 200) {
-  //       mangaSearchModel = mangaSearchModelFromJson(response.body);
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
+      if (response.statusCode == 200) {
+        mangaSearchModel = mangaSearchModelFromJson(response.body);
+      }
+    } catch (_) {
+      rethrow;
+    }
 
-  //   return mangaSearchModel!;
-  // }
+    return mangaSearchModel!;
+  }
 }
