@@ -7,7 +7,7 @@ import 'package:flutter_manga_app_test/models/response_models/manga_list_model.d
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_random_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_services.dart';
+import 'package:flutter_manga_app_test/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 
 class HomeProvider with ChangeNotifier {
@@ -53,7 +53,7 @@ class HomeProvider with ChangeNotifier {
 
       myMangaListModel.clear();
 
-      final MangaListModel result = await MangaDexServices.getMangaList(
+      final MangaListModel result = await MangaDexService.getMangaList(
         page: page,
         mangaPerPage: mangaPerPage,
       );
@@ -64,7 +64,7 @@ class HomeProvider with ChangeNotifier {
         final String mangaId = mangaListModel!.data[i].id;
         final MangaModel? mangaDetails = mangaId == ''
             ? null
-            : await MangaDexServices.getMangaDetails(mangaId: mangaId);
+            : await MangaDexService.getMangaDetails(mangaId: mangaId);
 
         final String coverId = mangaDetails!.data!.relationships!
             .where((rel) => rel.type == "cover_art")
@@ -72,17 +72,17 @@ class HomeProvider with ChangeNotifier {
             .id!;
         final MangaCoverModel? mangaCover = coverId == ""
             ? null
-            : await MangaDexServices.getMangaCover(coverId: coverId);
+            : await MangaDexService.getMangaCover(coverId: coverId);
 
         final String chapterId =
             mangaDetails.data!.attributes!.latestUploadedChapter!;
         final MangaChapterModel? mangaChapter = chapterId == ""
             ? null
-            : await MangaDexServices.getMangaChapter(chapterId: chapterId);
+            : await MangaDexService.getMangaChapter(chapterId: chapterId);
 
         final MangaStatsModel? mangaStats = mangaId == ''
             ? null
-            : await MangaDexServices.getMangaStats(mangaId: mangaId);
+            : await MangaDexService.getMangaStats(mangaId: mangaId);
 
         final MyMangaItemModel mangaItem = MyMangaItemModel(
           mangaModel: mangaDetails,
@@ -109,12 +109,12 @@ class HomeProvider with ChangeNotifier {
       myRandomMangaList.clear();
 
       for (int i = 0; i < totalRandomManga; i++) {
-        final MangaRandomModel result = await MangaDexServices.getRandomManga();
+        final MangaRandomModel result = await MangaDexService.getRandomManga();
 
         final String mangaId = result.data.id;
         final MangaModel? mangaDetails = mangaId == ""
             ? null
-            : await MangaDexServices.getMangaDetails(mangaId: mangaId);
+            : await MangaDexService.getMangaDetails(mangaId: mangaId);
 
         final String? coverId = mangaDetails?.data!.relationships!
             .where((rel) => rel.type == "cover_art")
@@ -122,17 +122,17 @@ class HomeProvider with ChangeNotifier {
             .id;
         final MangaCoverModel? mangaCover = coverId == "" || coverId == null
             ? null
-            : await MangaDexServices.getMangaCover(coverId: coverId);
+            : await MangaDexService.getMangaCover(coverId: coverId);
 
         final String? chapterId =
             mangaDetails?.data!.attributes!.latestUploadedChapter;
         final MangaChapterModel? mangaChapter =
             chapterId == "" || chapterId == null
                 ? null
-                : await MangaDexServices.getMangaChapter(chapterId: chapterId);
+                : await MangaDexService.getMangaChapter(chapterId: chapterId);
 
         final MangaStatsModel mangaStats =
-            await MangaDexServices.getMangaStats(mangaId: mangaId);
+            await MangaDexService.getMangaStats(mangaId: mangaId);
 
         final MyRandomMangaItemModel randomMangaItem = MyRandomMangaItemModel(
           mangaModel: mangaDetails,

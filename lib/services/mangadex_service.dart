@@ -11,7 +11,7 @@ import 'package:flutter_manga_app_test/models/response_models/manga_search_model
 import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
 import 'package:http/http.dart' as http;
 
-class MangaDexServices {
+class MangaDexService {
   static Future<MangaListModel> getMangaList({
     required int page,
     required int mangaPerPage,

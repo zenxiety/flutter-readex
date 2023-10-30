@@ -5,7 +5,7 @@ import 'package:flutter_manga_app_test/models/response_models/manga_cover_model.
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
 import 'package:flutter_manga_app_test/providers/home_builder_provider.dart';
-import 'package:flutter_manga_app_test/services/mangadex_services.dart';
+import 'package:flutter_manga_app_test/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,7 +63,7 @@ class ProfileProvider with ChangeNotifier {
         if (mangaId == "") continue;
 
         final MangaModel mangaModel =
-            await MangaDexServices.getMangaDetails(mangaId: mangaId);
+            await MangaDexService.getMangaDetails(mangaId: mangaId);
 
         final String? coverId = mangaModel.data!.relationships!
             .where((element) => element.type == "cover_art")
@@ -71,18 +71,18 @@ class ProfileProvider with ChangeNotifier {
             .id;
         final MangaCoverModel? mangaFavCover = coverId == null || coverId == ""
             ? null
-            : await MangaDexServices.getMangaCover(coverId: coverId);
+            : await MangaDexService.getMangaCover(coverId: coverId);
 
         final String? chapterId =
             mangaModel.data!.attributes!.latestUploadedChapter;
         final MangaChapterModel? mangaFavChapter =
             chapterId == null || chapterId == ""
                 ? null
-                : await MangaDexServices.getMangaChapter(chapterId: chapterId);
+                : await MangaDexService.getMangaChapter(chapterId: chapterId);
 
         final MangaStatsModel? mangaFavStats = mangaId == ""
             ? null
-            : await MangaDexServices.getMangaStats(mangaId: mangaId);
+            : await MangaDexService.getMangaStats(mangaId: mangaId);
 
         final MyFavouriteMangaModel favMangaModel = MyFavouriteMangaModel(
           mangaModel: mangaModel,

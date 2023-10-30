@@ -4,7 +4,7 @@ import 'package:flutter_manga_app_test/models/response_models/manga_chapter_mode
 import 'package:flutter_manga_app_test/models/response_models/manga_cover_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_search_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_services.dart';
+import 'package:flutter_manga_app_test/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/services/openai_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,9 +67,8 @@ class RecommendationProvider with ChangeNotifier {
       for (String mangaTitle in recommendedMangaTitles) {
         final String formattedMangaTitle =
             mangaTitle.trim().replaceAll(" ", "%20");
-        print(formattedMangaTitle);
         final MangaSearchModel mangaRecommendation =
-            await MangaDexServices.searchManga(mangaTitle: formattedMangaTitle);
+            await MangaDexService.searchManga(mangaTitle: formattedMangaTitle);
 
         final String? coverId = mangaRecommendation.data![0].relationships!
             .where((rel) => rel.type == "cover_art")
@@ -78,19 +77,19 @@ class RecommendationProvider with ChangeNotifier {
         final MangaCoverModel? mangaRecommendationCover =
             coverId == null || coverId == ""
                 ? null
-                : await MangaDexServices.getMangaCover(coverId: coverId);
+                : await MangaDexService.getMangaCover(coverId: coverId);
 
         final String? chapterId =
             mangaRecommendation.data![0].attributes!.latestUploadedChapter;
         final MangaChapterModel? mangaRecommendationChapter =
             chapterId == null || chapterId == ""
                 ? null
-                : await MangaDexServices.getMangaChapter(chapterId: chapterId);
+                : await MangaDexService.getMangaChapter(chapterId: chapterId);
 
         final String? mangaId = mangaRecommendation.data![0].id;
         final MangaStatsModel? mangaRecommendationStats = mangaId == null
             ? null
-            : await MangaDexServices.getMangaStats(mangaId: mangaId);
+            : await MangaDexService.getMangaStats(mangaId: mangaId);
 
         final MyMangaSearchModel mangaSearchModel = MyMangaSearchModel(
           mangaSearchModel: mangaRecommendation,
@@ -121,7 +120,7 @@ class RecommendationProvider with ChangeNotifier {
 
       final String formattedMangaTitle = searchTitle.replaceAll(" ", "%20");
       final MangaSearchModel mangaSearchResult =
-          await MangaDexServices.searchManga(mangaTitle: formattedMangaTitle);
+          await MangaDexService.searchManga(mangaTitle: formattedMangaTitle);
 
       mangaSearchList.clear();
 
@@ -133,18 +132,18 @@ class RecommendationProvider with ChangeNotifier {
         final MangaCoverModel? mangaSearchCover =
             coverId == null || coverId == ""
                 ? null
-                : await MangaDexServices.getMangaCover(coverId: coverId);
+                : await MangaDexService.getMangaCover(coverId: coverId);
 
         final String? chapterId = manga.attributes!.latestUploadedChapter;
         final MangaChapterModel? mangaSearchChapter =
             chapterId == null || chapterId == ""
                 ? null
-                : await MangaDexServices.getMangaChapter(chapterId: chapterId);
+                : await MangaDexService.getMangaChapter(chapterId: chapterId);
 
         final String? mangaId = manga.id;
         final MangaStatsModel? mangaSearchStats = mangaId == null
             ? null
-            : await MangaDexServices.getMangaStats(mangaId: mangaId);
+            : await MangaDexService.getMangaStats(mangaId: mangaId);
 
         final MyMangaSearchModel mangaSearchModel = MyMangaSearchModel(
           mangaSearchModel: mangaSearchResult,

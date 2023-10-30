@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_pages_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_services.dart';
+import 'package:flutter_manga_app_test/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 
 class ReadMangaProvider with ChangeNotifier {
@@ -16,7 +16,7 @@ class ReadMangaProvider with ChangeNotifier {
     try {
       fetchState = FetchState.loading;
 
-      final result = await MangaDexServices.getMangaPages(chapterId: chapterId);
+      final result = await MangaDexService.getMangaPages(chapterId: chapterId);
 
       mangaPagesModel = result;
 
