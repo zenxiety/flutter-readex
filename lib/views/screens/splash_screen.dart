@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/providers/splash_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/splash_provider.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {

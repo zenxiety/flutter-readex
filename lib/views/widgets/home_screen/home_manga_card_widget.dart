@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/providers/home_provider.dart';
-import 'package:flutter_manga_app_test/providers/recommendation_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/home_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/recommendation_provider.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:flutter_manga_app_test/utils/constants/home_card_category.dart';
 import 'package:flutter_manga_app_test/views/screens/manga/manga_details_screen.dart';

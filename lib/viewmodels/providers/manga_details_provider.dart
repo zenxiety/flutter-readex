@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_author_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_chapter_feed_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_services.dart';
+import 'package:flutter_manga_app_test/viewmodels/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +18,7 @@ class MangaDetailsProvider with ChangeNotifier {
     try {
       fetchState = FetchState.loading;
 
-      final result = await MangaDexServices.getMangaDetails(mangaId: mangaId);
+      final result = await MangaDexService.getMangaDetails(mangaId: mangaId);
 
       mangaModel = result;
 
@@ -35,7 +35,7 @@ class MangaDetailsProvider with ChangeNotifier {
     try {
       fetchState = FetchState.loading;
 
-      final result = await MangaDexServices.getMangaAuthor(authorId: authorId);
+      final result = await MangaDexService.getMangaAuthor(authorId: authorId);
 
       mangaAuthorModel = result;
 
@@ -53,7 +53,7 @@ class MangaDetailsProvider with ChangeNotifier {
       chapterFetchState = FetchState.loading;
 
       final result =
-          await MangaDexServices.getMangaChapterFeed(mangaId: mangaId);
+          await MangaDexService.getMangaChapterFeed(mangaId: mangaId);
 
       mangaChapterFeedModel = result;
 
