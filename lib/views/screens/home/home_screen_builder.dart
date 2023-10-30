@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/providers/home_builder_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/home_builder_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenBuilder extends StatefulWidget {

@@ -7,7 +7,7 @@ import 'package:flutter_manga_app_test/models/response_models/manga_list_model.d
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_random_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_service.dart';
+import 'package:flutter_manga_app_test/viewmodels/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 
 class HomeProvider with ChangeNotifier {

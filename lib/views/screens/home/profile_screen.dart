@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_manga_app_test/providers/profile_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/profile_provider.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:flutter_manga_app_test/views/screens/manga/manga_details_screen.dart';
 import 'package:google_fonts/google_fonts.dart';

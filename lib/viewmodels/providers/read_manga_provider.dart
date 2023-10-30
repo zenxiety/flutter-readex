@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_pages_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_service.dart';
+import 'package:flutter_manga_app_test/viewmodels/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 
 class ReadMangaProvider with ChangeNotifier {

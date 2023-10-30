@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
-import 'package:flutter_manga_app_test/providers/manga_details_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/manga_details_provider.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:flutter_manga_app_test/views/screens/manga/read_manga_screen.dart';
 import 'package:provider/provider.dart';

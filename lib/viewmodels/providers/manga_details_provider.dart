@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_author_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_chapter_feed_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
-import 'package:flutter_manga_app_test/services/mangadex_service.dart';
+import 'package:flutter_manga_app_test/viewmodels/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

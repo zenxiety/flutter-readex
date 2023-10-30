@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter_manga_app_test/constants/openai_api.dart';
-import 'package:flutter_manga_app_test/constants/urls.dart';
+import 'package:flutter_manga_app_test/utils/constants/openai_api.dart';
+import 'package:flutter_manga_app_test/utils/constants/urls.dart';
 import 'package:flutter_manga_app_test/models/openai_models/openai_model.dart';
 import 'package:http/http.dart' as http;
 

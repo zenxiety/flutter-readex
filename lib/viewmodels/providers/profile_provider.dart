@@ -4,8 +4,8 @@ import 'package:flutter_manga_app_test/models/response_models/manga_chapter_mode
 import 'package:flutter_manga_app_test/models/response_models/manga_cover_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_model.dart';
 import 'package:flutter_manga_app_test/models/response_models/manga_stats_model.dart';
-import 'package:flutter_manga_app_test/providers/home_builder_provider.dart';
-import 'package:flutter_manga_app_test/services/mangadex_service.dart';
+import 'package:flutter_manga_app_test/viewmodels/providers/home_builder_provider.dart';
+import 'package:flutter_manga_app_test/viewmodels/services/mangadex_service.dart';
 import 'package:flutter_manga_app_test/utils/constants/fetch_state.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
