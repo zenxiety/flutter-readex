@@ -57,14 +57,17 @@ class RecommendationProvider with ChangeNotifier {
 
       final List<String> recommendedMangaTitles = [];
       mangaRecommendations
-          .split(", ")
-          .map((mangaTitle) => recommendedMangaTitles.add(mangaTitle))
+          .replaceAll('"', "")
+          .split(",")
+          .map((mangaTitle) => recommendedMangaTitles.add(mangaTitle.trim()))
           .toList();
 
       mangaRecommendationList.clear();
 
       for (String mangaTitle in recommendedMangaTitles) {
-        final String formattedMangaTitle = mangaTitle.replaceAll(" ", "%20");
+        final String formattedMangaTitle =
+            mangaTitle.trim().replaceAll(" ", "%20");
+        print(formattedMangaTitle);
         final MangaSearchModel mangaRecommendation =
             await MangaDexServices.searchManga(mangaTitle: formattedMangaTitle);
 
