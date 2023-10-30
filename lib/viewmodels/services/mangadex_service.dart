@@ -32,14 +32,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaListModel = mangaListModelFromJson(response.body);
-      }
+      mangaListModel = mangaListModelFromJson(response.body);
+
+      return mangaListModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaListModel!;
   }
 
   static Future<MangaRandomModel> getRandomManga() async {
@@ -57,14 +55,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaRandomModel = mangaRandomModelFromJson(response.body);
-      }
+      mangaRandomModel = mangaRandomModelFromJson(response.body);
+
+      return mangaRandomModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaRandomModel!;
   }
 
   static Future<MangaModel> getMangaDetails({required String mangaId}) async {
@@ -82,14 +78,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaModel = mangaModelFromJson(response.body);
-      }
+      mangaModel = mangaModelFromJson(response.body);
+
+      return mangaModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaModel!;
   }
 
   static Future<MangaCoverModel> getMangaCover({
@@ -109,14 +103,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaCoverModel = mangaCoverModelFromJson(response.body);
-      }
+      mangaCoverModel = mangaCoverModelFromJson(response.body);
+
+      return mangaCoverModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaCoverModel!;
   }
 
   static Future<MangaChapterModel> getMangaChapter({
@@ -136,14 +128,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaChapterModel = mangaChapterModelFromJson(response.body);
-      }
+      mangaChapterModel = mangaChapterModelFromJson(response.body);
+
+      return mangaChapterModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaChapterModel!;
   }
 
   static Future<MangaStatsModel> getMangaStats({
@@ -163,14 +153,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaStatsModel = mangaStatsModelFromJson(response.body, mangaId);
-      }
+      mangaStatsModel = mangaStatsModelFromJson(response.body, mangaId);
+
+      return mangaStatsModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaStatsModel!;
   }
 
   static Future<MangaPagesModel> getMangaPages({
@@ -190,15 +178,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaChapterImagesModel =
-            mangaChapterImagesModelFromJson(response.body);
-      }
+      mangaChapterImagesModel = mangaChapterImagesModelFromJson(response.body);
+
+      return mangaChapterImagesModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaChapterImagesModel!;
   }
 
   static Future<MangaAuthorModel> getMangaAuthor({
@@ -218,14 +203,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaAuthorModel = mangaAuthorModelFromJson(response.body);
-      }
+      mangaAuthorModel = mangaAuthorModelFromJson(response.body);
+
+      return mangaAuthorModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaAuthorModel!;
   }
 
   static Future<MangaChapterFeedModel> getMangaChapterFeed({
@@ -245,14 +228,12 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaChapterFeedModel = mangaChapterFeedModelFromJson(response.body);
-      }
+      mangaChapterFeedModel = mangaChapterFeedModelFromJson(response.body);
+
+      return mangaChapterFeedModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaChapterFeedModel!;
   }
 
   static Future<MangaSearchModel> searchManga({
@@ -272,13 +253,11 @@ class MangaDexService {
 
       final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        mangaSearchModel = mangaSearchModelFromJson(response.body);
-      }
+      mangaSearchModel = mangaSearchModelFromJson(response.body);
+
+      return mangaSearchModel;
     } catch (_) {
       rethrow;
     }
-
-    return mangaSearchModel!;
   }
 }

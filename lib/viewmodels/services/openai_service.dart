@@ -23,13 +23,13 @@ class RecommendationService {
     try {
       var url = Uri.parse("${urls.openaiBaseUrl}v1/completions");
 
-      Map<String, String> headers = {
+      final Map<String, String> headers = {
         "Content-Type": "application/json;charset=UTF-8",
         "Charset": "utf-8",
         "Authorization": "Bearer $apiKey",
       };
 
-      String promptData =
+      final String promptData =
           "Hello there! Recently, I read a couple manga books, and I really like them. I especially enjoyed the titles $mangaList. Could you suggest eight mangas that are similar for me to read next? Please don't bring up any mangas I've read. Kindly reply to me in a compact one-lined csv string format only, indicating the manga titles you think are worth reading and with no any other responses such as opening and closing sentences. Thank you!";
 
       final data = jsonEncode({
@@ -47,10 +47,10 @@ class RecommendationService {
       if (response.statusCode == 200) {
         gptData = gptDataFromJson(response.body);
       }
+
+      return gptData;
     } catch (_) {
       rethrow;
     }
-
-    return gptData;
   }
 }
