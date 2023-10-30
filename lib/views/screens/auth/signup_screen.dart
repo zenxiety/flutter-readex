@@ -137,21 +137,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     validator: (value) =>
                                         state.validateEmail(value),
                                   ),
-                                  TextFormField(
-                                    controller: state.passwordController,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    obscureText: true,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                    decoration: const InputDecoration(
-                                      icon: Icon(
-                                        Icons.lock_outline_rounded,
-                                      ),
-                                      errorMaxLines: 5,
-                                    ),
-                                    validator: (value) =>
-                                        state.validatePassword(value),
-                                  ),
+                                  // TextFormField(
+                                  //   controller: state.passwordController,
+                                  //   keyboardType: TextInputType.text,
+                                  //   obscureText: true,
+                                  //   style:
+                                  //       Theme.of(context).textTheme.bodyMedium,
+                                  //   decoration: const InputDecoration(
+                                  //     icon: Icon(
+                                  //       Icons.lock_outline_rounded,
+                                  //     ),
+                                  //     errorMaxLines: 5,
+                                  //   ),
+                                  //   validator: (value) =>
+                                  //       state.validatePassword(value),
+                                  // ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 16),
                                     child: Row(
